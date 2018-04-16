@@ -1,0 +1,9 @@
+[Database]
+  Hoge = "hoge"
+  Password = "huga"
+  Username = "hoge"
+
+[Test]
+  [Test.hoge]
+    hoge = "huga"
+    moga = "moge"
