@@ -74,18 +74,43 @@ func (c *Config) GetPassphrase() error {
 
 	return nil
 }
-func Encrypt(config Config, p *Placeholder, keys []Key) error {
-	_, err := NewEncryptor(config)
+
+func Encrypt(config Config, p *Placeholder, paths []Path) error {
+	encryptor, err := NewEncryptor(config)
 	if err != nil {
 		return err
+	}
+
+	for _, path := range p.Matches(paths) {
+		value, err := p.Get(path)
+		if err != nil {
+			return err
+		}
+		value, err = encryptor.Encrypt(value)
+		if err != nil {
+			return err
+		}
+		p.Set(path, value)
 	}
 	return nil
 }
 
-func Decrypt(config Config, p *Placeholder, keys []Key) error {
-	_, err := NewEncryptor(config)
+func Decrypt(config Config, p *Placeholder, paths []Path) error {
+	decryptor, err := NewDecryptor(config)
 	if err != nil {
 		return err
+	}
+
+	for _, path := range p.Matches(paths) {
+		value, err := p.Get(path)
+		if err != nil {
+			return err
+		}
+		value, err = decryptor.Decrypt(value)
+		if err != nil {
+			return err
+		}
+		p.Set(path, value)
 	}
 	return nil
 }

@@ -1,6 +1,8 @@
 package toml_vault
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type GcpConfig struct {
 	GcpKmsResourceID  string
@@ -10,12 +12,11 @@ type GcpConfig struct {
 type GcpCryptor struct {
 	GcpConfig
 }
-
 func (c *GcpCryptor) Encrypt(value interface{}) (interface{}, error) {
 	return c.Decrypt(value)
 }
 
 func (c *GcpCryptor) Decrypt(value interface{}) (interface{}, error) {
-	fmt.Println("gcp cryptor")
+	fmt.Println("simple cryptor")
 	return value, nil
 }
