@@ -13,6 +13,14 @@ type Decryptor interface {
 	Decrypt(interface{}) (interface{}, error)
 }
 
+type Config struct {
+	SimpleConfig
+	AwsConfig
+	GcpConfig
+
+	Cryptor string
+}
+
 func NewCryptor(config *Config) Cryptor {
 	var cryptor Cryptor
 	switch config.Cryptor {

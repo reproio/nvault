@@ -4,14 +4,15 @@ import (
 	"fmt"
 )
 
+type GcpCryptor struct {
+	GcpConfig
+}
+
 type GcpConfig struct {
 	GcpKmsResourceID  string
 	GcpCredentialFile string
 }
 
-type GcpCryptor struct {
-	GcpConfig
-}
 func (c *GcpCryptor) Encrypt(value interface{}) (interface{}, error) {
 	return c.Decrypt(value)
 }

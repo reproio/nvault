@@ -1,21 +1,15 @@
-package nvault
+package cmd
 
 import (
 	"errors"
 	"os"
 
 	"github.com/manifoldco/promptui"
+
+	"github.com/reproio/nvault"
 )
 
-type Config struct {
-	SimpleConfig
-	AwsConfig
-	GcpConfig
-
-	Cryptor string
-}
-
-func (c *Config) GetPassphrase() error {
+func GetPassphrase(c *nvault.Config) error {
 	if c.Cryptor != "simple" {
 		return nil
 	}

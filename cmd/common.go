@@ -127,7 +127,7 @@ func Run(converter Converter) {
 
 func command(converter Converter, cryptor Cryptor) func(*cli.Context) error {
 	return func(c *cli.Context) (err error) {
-		if err = config.GetPassphrase(); err != nil {
+		if err = GetPassphrase(&config); err != nil {
 			return err
 		}
 

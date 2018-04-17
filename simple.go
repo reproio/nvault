@@ -10,6 +10,10 @@ package nvault
 // 	"os"
 // )
 
+type SimpleCryptor struct {
+	SimpleConfig
+}
+
 type SimpleConfig struct {
 	Salt            string
 	Cipher          string
@@ -20,10 +24,6 @@ type SimpleConfig struct {
 	Passphrase        string
 	UseSignPassphrase bool
 	SignPassphrase    string
-}
-
-type SimpleCryptor struct {
-	SimpleConfig
 }
 
 func (c *SimpleCryptor) Encrypt(value interface{}) (interface{}, error) {

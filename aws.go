@@ -11,15 +11,15 @@ import (
 	"github.com/aws/aws-sdk-go/service/kms"
 )
 
+type AwsCryptor struct {
+	AwsConfig
+}
+
 type AwsConfig struct {
 	AwsKmsKeyID        string
 	AwsRegion          string
 	AwsAccessKeyID     string
 	AwsSecretAccessKey string
-}
-
-type AwsCryptor struct {
-	AwsConfig
 }
 
 func (c *AwsCryptor) Encrypt(value interface{}) (interface{}, error) {
