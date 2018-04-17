@@ -14,7 +14,7 @@ func NewDecryptor(config Config) (Decryptor, error) {
 	case "simple":
 		fallthrough
 	default:
-		decryptor = &SimpleCryptor{}
+		decryptor = &SimpleCryptor{config.SimpleConfig}
 	}
 
 	return decryptor, nil

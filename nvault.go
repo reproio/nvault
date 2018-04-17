@@ -13,24 +13,15 @@ type Cryptor interface {
 }
 
 type Config struct {
+	SimpleConfig
 	AwsConfig
 	GcpConfig
 
 	Cryptor string
-
-	Salt            string
-	Cipher          string
-	KeyLen          int
-	Digest          string
-	SignatureKeyLen int
-
-	UseSignPassphrase bool
-	Passphrase        string
-	SignPassphrase    string
 }
 
 func (c *Config) GetPassphrase() error {
-	if c.Cryptor == "simple" {
+	if c.Cryptor != "simple" {
 		return nil
 	}
 
@@ -40,6 +31,7 @@ func (c *Config) GetPassphrase() error {
 	if passphrase == "" {
 		prompt := promptui.Prompt{
 			Label: "Enter passphrase",
+			Mask:  '*',
 			Validate: func(input string) error {
 				if input == "" {
 					return errors.New("Please input passphrase")
@@ -58,6 +50,7 @@ func (c *Config) GetPassphrase() error {
 	if signPassphrase == "" && c.UseSignPassphrase {
 		prompt := promptui.Prompt{
 			Label: "Enter sign passphrase",
+			Mask:  '*',
 			Validate: func(input string) error {
 				if input == "" {
 					return errors.New("Please input sign passphrase")

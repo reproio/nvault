@@ -14,7 +14,7 @@ func NewEncryptor(config Config) (Encryptor, error) {
 	case "simple":
 		fallthrough
 	default:
-		encryptor = &SimpleCryptor{}
+		encryptor = &SimpleCryptor{config.SimpleConfig}
 	}
 
 	return encryptor, nil
