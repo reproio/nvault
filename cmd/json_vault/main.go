@@ -1,9 +1,8 @@
 package main
 
 import (
+	"encoding/json"
 	"io"
-
-	"github.com/BurntSushi/toml"
 
 	"github.com/reproio/nvault"
 	"github.com/reproio/nvault/cmd"
@@ -13,8 +12,8 @@ func main() {
 	cmd.Run(func(input io.Reader, output io.Writer, cryptor cmd.Cryptor) error {
 		p := nvault.Placeholder{}
 
-		_, err := toml.DecodeReader(input, &p)
-		if err != nil {
+		decoder := json.NewDecoder(input)
+		if err := decoder.Decode(&p); err != nil {
 			return err
 		}
 
@@ -22,7 +21,7 @@ func main() {
 			return err
 		}
 
-		encoder := toml.NewEncoder(output)
+		encoder := json.NewEncoder(output)
 		if err := encoder.Encode(&p); err != nil {
 			return err
 		}

@@ -7,10 +7,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/reproio/toml_vault"
+	"github.com/reproio/nvault"
 )
 
-func ParseKeys(clikey string) (paths []toml_vault.Path, err error) {
+func ParseKeys(clikey string) (paths []nvault.Path, err error) {
 	for _, key := range strings.Split(clikey, ",") {
 		path, err := parseKey(key)
 		if err != nil {
@@ -40,7 +40,7 @@ var regs = []ScanType{
 	ScanType{regexp.MustCompile(`^[^\.]+`), "string"},
 }
 
-func parseKey(key string) (toml_vault.Path, error) {
+func parseKey(key string) (nvault.Path, error) {
 	s := bufio.NewScanner(strings.NewReader(key))
 
 	s.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
@@ -86,10 +86,10 @@ func parseKey(key string) (toml_vault.Path, error) {
 		return nil, errors.New("no path fragments")
 	}
 
-	var path toml_vault.Path
+	var path nvault.Path
 	for _, fragment := range fragments {
 		f := strings.SplitN(fragment, ":", 2)
-		path = append(path, toml_vault.PathFragment{f[0], f[1]})
+		path = append(path, nvault.PathFragment{f[0], f[1]})
 	}
 
 	if path[0].Fragment != "$" {

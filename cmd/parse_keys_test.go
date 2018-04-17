@@ -3,29 +3,29 @@ package cmd
 import (
 	"testing"
 
-	"github.com/reproio/toml_vault"
+	"github.com/reproio/nvault"
 )
 
 func TestParseKeys(t *testing.T) {
 	tests := []struct {
 		clikey   string
-		expected []toml_vault.Path
+		expected []nvault.Path
 		err      string
 	}{
 		{
 			"$.test.[0]./test/,$./test/.[0].test",
-			[]toml_vault.Path{
-				toml_vault.Path{
-					toml_vault.PathFragment{"string", "$"},
-					toml_vault.PathFragment{"string", "test"},
-					toml_vault.PathFragment{"number", "0"},
-					toml_vault.PathFragment{"regexp", "test"},
+			[]nvault.Path{
+				nvault.Path{
+					nvault.PathFragment{"string", "$"},
+					nvault.PathFragment{"string", "test"},
+					nvault.PathFragment{"number", "0"},
+					nvault.PathFragment{"regexp", "test"},
 				},
-				toml_vault.Path{
-					toml_vault.PathFragment{"string", "$"},
-					toml_vault.PathFragment{"regexp", "test"},
-					toml_vault.PathFragment{"number", "0"},
-					toml_vault.PathFragment{"string", "test"},
+				nvault.Path{
+					nvault.PathFragment{"string", "$"},
+					nvault.PathFragment{"regexp", "test"},
+					nvault.PathFragment{"number", "0"},
+					nvault.PathFragment{"string", "test"},
 				},
 			},
 			"",

@@ -3,7 +3,7 @@ package main
 import (
 	"io"
 
-	"github.com/BurntSushi/toml"
+	"gopkg.in/yaml.v2"
 
 	"github.com/reproio/nvault"
 	"github.com/reproio/nvault/cmd"
@@ -13,8 +13,8 @@ func main() {
 	cmd.Run(func(input io.Reader, output io.Writer, cryptor cmd.Cryptor) error {
 		p := nvault.Placeholder{}
 
-		_, err := toml.DecodeReader(input, &p)
-		if err != nil {
+		decoder := yaml.NewDecoder(input)
+		if err := decoder.Decode(&p); err != nil {
 			return err
 		}
 
@@ -22,7 +22,7 @@ func main() {
 			return err
 		}
 
-		encoder := toml.NewEncoder(output)
+		encoder := yaml.NewEncoder(output)
 		if err := encoder.Encode(&p); err != nil {
 			return err
 		}

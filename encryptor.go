@@ -1,4 +1,4 @@
-package toml_vault
+package nvault
 
 type Encryptor interface {
 	Encrypt(interface{}) (interface{}, error)

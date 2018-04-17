@@ -7,16 +7,16 @@ import (
 
 	"github.com/urfave/cli"
 
-	"github.com/reproio/toml_vault"
+	"github.com/reproio/nvault"
 )
 
 type Converter func(input io.Reader, output io.Writer, cryptor Cryptor) error
-type Cryptor func(*toml_vault.Placeholder) error
+type Cryptor func(*nvault.Placeholder) error
 
 var (
 	key    string
 	output string
-	config toml_vault.Config
+	config nvault.Config
 )
 
 func Run(converter Converter) {
@@ -145,8 +145,8 @@ func command(converter Converter, cryptor Cryptor) func(*cli.Context) error {
 	}
 }
 
-func encryptor(p *toml_vault.Placeholder) (err error) {
-	var paths []toml_vault.Path
+func encryptor(p *nvault.Placeholder) (err error) {
+	var paths []nvault.Path
 	if key != "" {
 		paths, err = ParseKeys(key)
 		if err != nil {
@@ -154,18 +154,18 @@ func encryptor(p *toml_vault.Placeholder) (err error) {
 		}
 	} else {
 		for _, path := range p.Paths() {
-			paths = append(paths, path.AddRoot(toml_vault.PathFragment{"string", "$"}))
+			paths = append(paths, path.AddRoot(nvault.PathFragment{"string", "$"}))
 		}
 	}
 
-	if err = toml_vault.Encrypt(config, p, paths); err != nil {
+	if err = nvault.Encrypt(config, p, paths); err != nil {
 		return
 	}
 	return
 }
 
-func decryptor(p *toml_vault.Placeholder) (err error) {
-	var paths []toml_vault.Path
+func decryptor(p *nvault.Placeholder) (err error) {
+	var paths []nvault.Path
 	if key != "" {
 		paths, err = ParseKeys(key)
 		if err != nil {
@@ -173,11 +173,11 @@ func decryptor(p *toml_vault.Placeholder) (err error) {
 		}
 	} else {
 		for _, path := range p.Paths() {
-			paths = append(paths, path.AddRoot(toml_vault.PathFragment{"string", "$"}))
+			paths = append(paths, path.AddRoot(nvault.PathFragment{"string", "$"}))
 		}
 	}
 
-	if err = toml_vault.Decrypt(config, p, paths); err != nil {
+	if err = nvault.Decrypt(config, p, paths); err != nil {
 		return
 	}
 	return

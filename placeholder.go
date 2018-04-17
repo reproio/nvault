@@ -1,4 +1,4 @@
-package toml_vault
+package nvault
 
 import (
 	"fmt"

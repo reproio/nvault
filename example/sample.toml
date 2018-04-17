@@ -1,0 +1,25 @@
+[database]
+username = "hoge"
+password = "huga"
+hoge = "hoge"
+
+[test]
+  [test.hoge]
+  hoge = "huga"
+  moga = "moge"
+
+[[top]]
+name = "name 0"
+moga = "moga 0"
+
+[[top]]
+name = "name 1"
+moga = "moga 1"
+
+[hoge]
+[[hoge.array]]
+name = "hoge 0"
+moga = "moga 0"
+[[hoge.array]]
+name = "hoge 1"
+moga = "moga 1"
