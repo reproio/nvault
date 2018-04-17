@@ -158,7 +158,7 @@ func encryptor(p *nvault.Placeholder) (err error) {
 		}
 	}
 
-	if err = nvault.Encrypt(config, p, paths); err != nil {
+	if err = nvault.Encrypt(p, &config, paths...); err != nil {
 		return
 	}
 	return
@@ -177,7 +177,7 @@ func decryptor(p *nvault.Placeholder) (err error) {
 		}
 	}
 
-	if err = nvault.Decrypt(config, p, paths); err != nil {
+	if err = nvault.Decrypt(p, &config, paths...); err != nil {
 		return
 	}
 	return
