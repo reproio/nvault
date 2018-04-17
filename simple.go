@@ -1,5 +1,15 @@
 package nvault
 
+// import (
+// 	"crypto/aes"
+// 	"crypto/cipher"
+// 	"crypto/rand"
+// 	"encoding/hex"
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
 type SimpleConfig struct {
 	Salt            string
 	Cipher          string
@@ -7,8 +17,8 @@ type SimpleConfig struct {
 	Digest          string
 	SignatureKeyLen int
 
-	UseSignPassphrase bool
 	Passphrase        string
+	UseSignPassphrase bool
 	SignPassphrase    string
 }
 

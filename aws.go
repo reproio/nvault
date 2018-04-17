@@ -1,6 +1,15 @@
 package nvault
 
-import "fmt"
+import (
+	"encoding/base64"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/defaults"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/kms"
+)
 
 type AwsConfig struct {
 	AwsKmsKeyID        string
@@ -14,10 +23,56 @@ type AwsCryptor struct {
 }
 
 func (c *AwsCryptor) Encrypt(value interface{}) (interface{}, error) {
-	return c.Decrypt(value)
+	strvalue := fmt.Sprintf("%v", value)
+
+	output, err := service(&c.AwsConfig).Encrypt(&kms.EncryptInput{
+		KeyId:     aws.String(c.AwsKmsKeyID),
+		Plaintext: []byte(strvalue),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	encoded := base64.StdEncoding.EncodeToString(output.CiphertextBlob)
+	return encoded, nil
 }
 
 func (c *AwsCryptor) Decrypt(value interface{}) (interface{}, error) {
-	fmt.Println("aws cryptor")
-	return value, nil
+	strvalue := fmt.Sprintf("%v", value)
+
+	decoded, err := base64.StdEncoding.DecodeString(strvalue)
+	if err != nil {
+		return value, nil
+	}
+
+	output, err := service(&c.AwsConfig).Decrypt(&kms.DecryptInput{
+		CiphertextBlob: decoded,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return string(output.Plaintext), nil
+}
+
+func service(c *AwsConfig) *kms.KMS {
+	return kms.New(session.New(&aws.Config{
+		Region:      &c.AwsRegion,
+		Credentials: createCredentials(c),
+	}))
+}
+
+func createCredentials(c *AwsConfig) *credentials.Credentials {
+	defaultProvider := defaults.RemoteCredProvider(
+		aws.Config{Region: &c.AwsRegion},
+		defaults.Handlers(),
+	)
+	envProvider := &credentials.EnvProvider{}
+	configProvider := &credentials.StaticProvider{credentials.Value{c.AwsAccessKeyID, c.AwsSecretAccessKey, "", ""}}
+
+	return credentials.NewChainCredentials([]credentials.Provider{
+		defaultProvider,
+		envProvider,
+		configProvider,
+	})
 }
