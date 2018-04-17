@@ -97,6 +97,12 @@
   version = "v0.0.3"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/mitchellh/mapstructure"
+  packages = ["."]
+  revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
+
+[[projects]]
   name = "github.com/urfave/cli"
   packages = ["."]
   revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
@@ -117,6 +123,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f8e11ef827a1851d9a210a5e3484dc65772f401db43e19cd768a03c8672bb31d"
+  inputs-digest = "666335687f6060328490859b7d0ee9eb1e0b2051227b273971d85be7247a63ac"
   solver-name = "gps-cdcl"
   solver-version = 1

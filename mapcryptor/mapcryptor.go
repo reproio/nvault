@@ -6,7 +6,7 @@ import (
 	"github.com/reproio/nvault"
 )
 
-func Encrypt(p *nvault.Placeholder, s interface{}, config *nvault.Config, path ...nvault.Path) error {
+func Encrypt(p *nvault.Placeholder, s interface{}, config *nvault.Config, paths ...nvault.Path) error {
 	err := nvault.Encrypt(p, config, paths...)
 	if err != nil {
 		return err
@@ -15,7 +15,7 @@ func Encrypt(p *nvault.Placeholder, s interface{}, config *nvault.Config, path .
 	return mapstructure.Decode(p, s)
 }
 
-func Decrypt(p *nvault.Placeholder, s interface{}, config *nvault.Config, path ...nvault.Path) error {
+func Decrypt(p *nvault.Placeholder, s interface{}, config *nvault.Config, paths ...nvault.Path) error {
 	err := nvault.Decrypt(p, config, paths...)
 	if err != nil {
 		return err
