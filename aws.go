@@ -49,7 +49,7 @@ func (c *AwsCryptor) Decrypt(value interface{}) (interface{}, error) {
 		CiphertextBlob: decoded,
 	})
 	if err != nil {
-		return nil, err
+		return value, nil
 	}
 
 	return string(output.Plaintext), nil
