@@ -29,7 +29,7 @@ func (c *AwsCryptor) Encrypt(value interface{}) (interface{}, error) {
 	}
 	strvalue := fmt.Sprintf("%v", value)
 
-	output, err := service(&c.AwsConfig).Encrypt(&kms.EncryptInput{
+	output, err := serviceAws(&c.AwsConfig).Encrypt(&kms.EncryptInput{
 		KeyId:     aws.String(c.AwsKmsKeyID),
 		Plaintext: []byte(strvalue),
 	})
@@ -49,7 +49,7 @@ func (c *AwsCryptor) Decrypt(value interface{}) (interface{}, error) {
 		return value, nil
 	}
 
-	output, err := service(&c.AwsConfig).Decrypt(&kms.DecryptInput{
+	output, err := serviceAws(&c.AwsConfig).Decrypt(&kms.DecryptInput{
 		CiphertextBlob: decoded,
 	})
 	if err != nil {
@@ -59,14 +59,14 @@ func (c *AwsCryptor) Decrypt(value interface{}) (interface{}, error) {
 	return string(output.Plaintext), nil
 }
 
-func service(c *AwsConfig) *kms.KMS {
+func serviceAws(c *AwsConfig) *kms.KMS {
 	return kms.New(session.New(&aws.Config{
 		Region:      &c.AwsRegion,
-		Credentials: createCredentials(c),
+		Credentials: createAwsCredentials(c),
 	}))
 }
 
-func createCredentials(c *AwsConfig) *credentials.Credentials {
+func createAwsCredentials(c *AwsConfig) *credentials.Credentials {
 	defaultProvider := defaults.RemoteCredProvider(
 		aws.Config{Region: &c.AwsRegion},
 		defaults.Handlers(),
