@@ -2,6 +2,7 @@ package nvault
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -23,6 +24,9 @@ type AwsConfig struct {
 }
 
 func (c *AwsCryptor) Encrypt(value interface{}) (interface{}, error) {
+	if c.AwsKmsKeyID == "" {
+		return nil, errors.New("missing Aws KMS Key ID")
+	}
 	strvalue := fmt.Sprintf("%v", value)
 
 	output, err := service(&c.AwsConfig).Encrypt(&kms.EncryptInput{
@@ -30,7 +34,7 @@ func (c *AwsCryptor) Encrypt(value interface{}) (interface{}, error) {
 		Plaintext: []byte(strvalue),
 	})
 	if err != nil {
-		return nil, err
+		return value, nil
 	}
 
 	encoded := base64.StdEncoding.EncodeToString(output.CiphertextBlob)
