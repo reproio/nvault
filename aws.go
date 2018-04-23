@@ -72,11 +72,22 @@ func createAwsCredentials(c *AwsConfig) *credentials.Credentials {
 		defaults.Handlers(),
 	)
 	envProvider := &credentials.EnvProvider{}
-	configProvider := &credentials.StaticProvider{credentials.Value{c.AwsAccessKeyID, c.AwsSecretAccessKey, "", ""}}
 
-	return credentials.NewChainCredentials([]credentials.Provider{
+	providers := []credentials.Provider{
 		defaultProvider,
 		envProvider,
-		configProvider,
-	})
+	}
+
+	if c.AwsAccessKeyID != "" && c.AwsSecretAccessKey != "" {
+		providers = append(providers, &credentials.StaticProvider{
+			credentials.Value{
+				c.AwsAccessKeyID,
+				c.AwsSecretAccessKey,
+				"",
+				"",
+			},
+		})
+	}
+
+	return credentials.NewChainCredentials(providers)
 }
