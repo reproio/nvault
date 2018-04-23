@@ -60,10 +60,16 @@ func (c *AwsCryptor) Decrypt(value interface{}) (interface{}, error) {
 }
 
 func serviceAws(c *AwsConfig) *kms.KMS {
-	return kms.New(session.New(&aws.Config{
-		Region:      &c.AwsRegion,
-		Credentials: createAwsCredentials(c),
-	}))
+	config := &aws.Config{}
+
+	if c.AwsRegion != "" {
+		config.Region = &c.AwsRegion
+	}
+
+	if c.AwsAccessKeyID != "" && c.AwsSecretAccessKey != "" {
+		config.Credentials = createAwsCredentials(c)
+	}
+	return kms.New(session.New(config))
 }
 
 func createAwsCredentials(c *AwsConfig) *credentials.Credentials {

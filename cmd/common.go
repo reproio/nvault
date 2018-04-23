@@ -83,17 +83,14 @@ func Run(converter Converter) {
 		},
 		cli.StringFlag{
 			Name:        "aws-region",
-			EnvVar:      "AWS_REGION",
 			Destination: &config.AwsRegion,
 		},
 		cli.StringFlag{
 			Name:        "aws-access-key-id",
-			EnvVar:      "AWS_ACCESS_KEY_ID",
 			Destination: &config.AwsAccessKeyID,
 		},
 		cli.StringFlag{
 			Name:        "aws-secret-access-key",
-			EnvVar:      "AWS_SECRET_ACCESS_KEY",
 			Destination: &config.AwsSecretAccessKey,
 		},
 
