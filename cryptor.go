@@ -48,24 +48,3 @@ func NewConfig(cryptor string, opts ...Option) *Config {
 	}
 	return config
 }
-
-func WithSimpleConfig(sc *SimpleConfig) Option {
-	return func(c *Config) error {
-		c.SimpleConfig = *sc
-		return nil
-	}
-}
-
-func WithAwsConfig(ac *AwsConfig) Option {
-	return func(c *Config) error {
-		c.AwsConfig = *ac
-		return nil
-	}
-}
-
-func WithGcpConfig(gc *GcpConfig) Option {
-	return func(c *Config) error {
-		c.GcpConfig = *gc
-		return nil
-	}
-}

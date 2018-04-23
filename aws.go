@@ -91,3 +91,18 @@ func createAwsCredentials(c *AwsConfig) *credentials.Credentials {
 
 	return credentials.NewChainCredentials(providers)
 }
+
+func WithAwsCredential(awsAccessKeyID, awsSecretAccessKey string) Option {
+	return func(c *Config) error {
+		c.AwsAccessKeyID = awsAccessKeyID
+		c.AwsSecretAccessKey = awsSecretAccessKey
+		return nil
+	}
+}
+
+func WithAwsRegion(awsRegion string) Option {
+	return func(c *Config) error {
+		c.AwsRegion = awsRegion
+		return nil
+	}
+}
