@@ -1,3 +1,6 @@
+Hoge = "hoge"
+Huga = "huga"
+
 [database]
 username = "hoge"
 password = "huga"

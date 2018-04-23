@@ -3,6 +3,8 @@ package nvault
 import (
 	"fmt"
 	"regexp"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 type PathFragment struct {
@@ -196,4 +198,22 @@ func (ps Placeholders) Get(path Path) (interface{}, error) {
 		return p.Get(Path(path[1:]))
 	}
 	return nil, nil
+}
+
+func (p *Placeholder) Encrypt(s interface{}, config *Config, paths ...Path) error {
+	err := Encrypt(p, config, paths...)
+	if err != nil {
+		return err
+	}
+
+	return mapstructure.Decode(p, s)
+}
+
+func (p *Placeholder) Decrypt(s interface{}, config *Config, paths ...Path) error {
+	err := Decrypt(p, config, paths...)
+	if err != nil {
+		return err
+	}
+
+	return mapstructure.Decode(p, s)
 }
