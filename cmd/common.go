@@ -21,8 +21,50 @@ var (
 
 func Run(converter Converter) {
 	app := cli.NewApp()
+	app.Commands = subcommands(converter)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
+}
 
-	flags := []cli.Flag{
+func RunAll() {
+	app := cli.NewApp()
+	app.Commands = []cli.Command{
+		{
+			Name:        "json",
+			Subcommands: subcommands(JsonConverter),
+		},
+		{
+			Name:        "toml",
+			Subcommands: subcommands(TomlConverter),
+		},
+		{
+			Name:        "yaml",
+			Subcommands: subcommands(YamlConverter),
+		},
+	}
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func subcommands(converter Converter) []cli.Command {
+	return []cli.Command{
+		{
+			Name:   "encrypt",
+			Flags:  flags(),
+			Action: command(converter, encryptor),
+		},
+		{
+			Name:   "decrypt",
+			Flags:  flags(),
+			Action: command(converter, decryptor),
+		},
+	}
+}
+
+func flags() []cli.Flag {
+	return []cli.Flag{
 		cli.StringFlag{
 			Name:        "cryptor",
 			Usage:       "cryptor",
@@ -102,23 +144,6 @@ func Run(converter Converter) {
 			Name:        "gcp-credential-file",
 			Destination: &config.GcpCredentialFile,
 		},
-	}
-
-	app.Commands = []cli.Command{
-		{
-			Name:   "encrypt",
-			Flags:  flags,
-			Action: command(converter, encryptor),
-		},
-		{
-			Name:   "decrypt",
-			Flags:  flags,
-			Action: command(converter, decryptor),
-		},
-	}
-
-	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
 	}
 }
 
