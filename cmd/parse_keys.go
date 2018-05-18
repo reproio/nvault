@@ -31,13 +31,13 @@ type ScanType struct {
 }
 
 var regs = []ScanType{
-	ScanType{regexp.MustCompile(`^'(.*?)'`), "string"},
-	ScanType{regexp.MustCompile(`^"(.*?)"`), "string"},
-	ScanType{regexp.MustCompile(`^/(.*?)/`), "regexp"},
-	ScanType{regexp.MustCompile(`^\s+`), "space"},
-	ScanType{regexp.MustCompile(`^\[(\d*)\]`), "number"},
-	ScanType{regexp.MustCompile(`^\.`), "delimiter"},
-	ScanType{regexp.MustCompile(`^[^\.]+`), "string"},
+	{regexp.MustCompile(`^'(.*?)'`), "string"},
+	{regexp.MustCompile(`^"(.*?)"`), "string"},
+	{regexp.MustCompile(`^/(.*?)/`), "regexp"},
+	{regexp.MustCompile(`^\s+`), "space"},
+	{regexp.MustCompile(`^\[(\d*)\]`), "number"},
+	{regexp.MustCompile(`^\.`), "delimiter"},
+	{regexp.MustCompile(`^[^\.]+`), "string"},
 }
 
 func parseKey(key string) (nvault.Path, error) {

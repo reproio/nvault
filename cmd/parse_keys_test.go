@@ -15,13 +15,13 @@ func TestParseKeys(t *testing.T) {
 		{
 			"$.test.[0]./test/,$./test/.[0].test",
 			[]nvault.Path{
-				nvault.Path{
+				{
 					nvault.PathFragment{"string", "$"},
 					nvault.PathFragment{"string", "test"},
 					nvault.PathFragment{"number", "0"},
 					nvault.PathFragment{"regexp", "test"},
 				},
-				nvault.Path{
+				{
 					nvault.PathFragment{"string", "$"},
 					nvault.PathFragment{"regexp", "test"},
 					nvault.PathFragment{"number", "0"},
@@ -38,14 +38,14 @@ func TestParseKeys(t *testing.T) {
 
 		if test.err != "" {
 			if err == nil {
-				t.Errorf("unexpected: clikey %v returns %v expeced %v", test.clikey, err, test.err)
+				t.Errorf("unexpected: clikey %v returns %v expected %v", test.clikey, err, test.err)
 			}
 			continue
 		}
 
 		for i, expected := range test.expected {
 			if !expected.Equal(paths[i]) {
-				t.Errorf("unexpected: clikey %v returns %v expeced %v", test.clikey, paths[i], expected)
+				t.Errorf("unexpected: clikey %v returns %v expected %v", test.clikey, paths[i], expected)
 			}
 		}
 	}
