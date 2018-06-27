@@ -10,6 +10,7 @@ import (
 	"github.com/reproio/nvault"
 )
 
+// ParseKeys ...
 func ParseKeys(clikey string) (paths []nvault.Path, err error) {
 	for _, key := range strings.Split(clikey, ",") {
 		path, err := parseKey(key)
@@ -25,6 +26,7 @@ func ParseKeys(clikey string) (paths []nvault.Path, err error) {
 	return paths, nil
 }
 
+// ScanType ...
 type ScanType struct {
 	Regexp *regexp.Regexp
 	Type   string
@@ -89,7 +91,10 @@ func parseKey(key string) (nvault.Path, error) {
 	var path nvault.Path
 	for _, fragment := range fragments {
 		f := strings.SplitN(fragment, ":", 2)
-		path = append(path, nvault.PathFragment{f[0], f[1]})
+		path = append(path, nvault.PathFragment{
+			Type:     f[0],
+			Fragment: f[1]},
+		)
 	}
 
 	if path[0].Fragment != "$" {

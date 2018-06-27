@@ -1,5 +1,6 @@
 package nvault
 
+// Encrypt ...
 func Encrypt(p *Placeholder, config *Config, paths ...Path) error {
 	cryptor := NewCryptor(config)
 
@@ -17,6 +18,7 @@ func Encrypt(p *Placeholder, config *Config, paths ...Path) error {
 	return nil
 }
 
+// Decrypt ...
 func Decrypt(p *Placeholder, config *Config, paths ...Path) error {
 	cryptor := NewCryptor(config)
 

@@ -1,18 +1,22 @@
 package nvault
 
+// Cryptor ...
 type Cryptor interface {
 	Encryptor
 	Decryptor
 }
 
+// Encryptor ...
 type Encryptor interface {
 	Encrypt(interface{}) (interface{}, error)
 }
 
+// Decryptor ...
 type Decryptor interface {
 	Decrypt(interface{}) (interface{}, error)
 }
 
+// NewCryptor ...
 func NewCryptor(config *Config) Cryptor {
 	var cryptor Cryptor
 	switch config.Cryptor {
@@ -29,6 +33,7 @@ func NewCryptor(config *Config) Cryptor {
 	return cryptor
 }
 
+// Config ...
 type Config struct {
 	SimpleConfig
 	AwsConfig
@@ -37,8 +42,10 @@ type Config struct {
 	Cryptor string
 }
 
+// Option ...
 type Option func(c *Config) error
 
+// NewConfig ...
 func NewConfig(cryptor string, opts ...Option) *Config {
 	config := &Config{
 		Cryptor: cryptor,

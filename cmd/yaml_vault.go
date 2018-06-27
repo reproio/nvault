@@ -9,6 +9,7 @@ import (
 	"github.com/reproio/nvault"
 )
 
+// YamlConverter receives input of Yaml reader, output writer and ctyptor
 func YamlConverter(input io.Reader, output io.Writer, cryptor Cryptor) error {
 	p := nvault.Placeholder{}
 

@@ -8,6 +8,7 @@ import (
 	"github.com/reproio/nvault"
 )
 
+// TomlConverter ...
 func TomlConverter(input io.Reader, output io.Writer, cryptor Cryptor) error {
 	p := nvault.Placeholder{}
 

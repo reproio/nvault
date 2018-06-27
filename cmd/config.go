@@ -9,6 +9,7 @@ import (
 	"github.com/reproio/nvault"
 )
 
+// GetPassphrase ...
 func GetPassphrase(c *nvault.Config) error {
 	if c.Cryptor != "simple" {
 		return nil

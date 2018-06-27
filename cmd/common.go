@@ -10,15 +10,19 @@ import (
 	"github.com/reproio/nvault"
 )
 
-type Converter func(input io.Reader, output io.Writer, cryptor Cryptor) error
-type Cryptor func(*nvault.Placeholder) error
-
 var (
 	key    string
 	output string
 	config nvault.Config
 )
 
+// Converter ...
+type Converter func(input io.Reader, output io.Writer, cryptor Cryptor) error
+
+// Cryptor ...
+type Cryptor func(*nvault.Placeholder) error
+
+// Run ...
 func Run(converter Converter) {
 	app := cli.NewApp()
 	app.Commands = subcommands(converter)
@@ -27,12 +31,13 @@ func Run(converter Converter) {
 	}
 }
 
+// RunAll ...
 func RunAll() {
 	app := cli.NewApp()
 	app.Commands = []cli.Command{
 		{
 			Name:        "json",
-			Subcommands: subcommands(JsonConverter),
+			Subcommands: subcommands(JSONConverter),
 		},
 		{
 			Name:        "toml",
@@ -176,7 +181,7 @@ func encryptor(p *nvault.Placeholder) (err error) {
 		}
 	} else {
 		for _, path := range p.Paths() {
-			paths = append(paths, path.AddRoot(nvault.PathFragment{"string", "$"}))
+			paths = append(paths, path.AddRoot(nvault.PathFragment{Type: "string", Fragment: "$"}))
 		}
 	}
 
@@ -195,7 +200,7 @@ func decryptor(p *nvault.Placeholder) (err error) {
 		}
 	} else {
 		for _, path := range p.Paths() {
-			paths = append(paths, path.AddRoot(nvault.PathFragment{"string", "$"}))
+			paths = append(paths, path.AddRoot(nvault.PathFragment{Type: "string", Fragment: "$"}))
 		}
 	}
 
@@ -208,15 +213,13 @@ func decryptor(p *nvault.Placeholder) (err error) {
 func getReader(input string) (*os.File, error) {
 	if input != "" {
 		return os.OpenFile(input, os.O_RDONLY, 0644)
-	} else {
-		return os.Stdin, nil
 	}
+	return os.Stdin, nil
 }
 
 func getWriter() (*os.File, error) {
 	if output != "" {
 		return os.Create(output)
-	} else {
-		return os.Stdout, nil
 	}
+	return os.Stdout, nil
 }

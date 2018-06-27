@@ -13,15 +13,18 @@ import (
 	kms "google.golang.org/api/cloudkms/v1"
 )
 
+// GcpCryptor ...
 type GcpCryptor struct {
 	GcpConfig
 }
 
+// GcpConfig ...
 type GcpConfig struct {
 	GcpKmsResourceID  string
 	GcpCredentialFile string
 }
 
+// Encrypt ...
 func (c *GcpCryptor) Encrypt(value interface{}) (interface{}, error) {
 	if c.GcpKmsResourceID == "" {
 		return nil, errors.New("missing Gcp KMS Resource ID")
@@ -44,6 +47,7 @@ func (c *GcpCryptor) Encrypt(value interface{}) (interface{}, error) {
 	return encoded, nil
 }
 
+// Decrypt ...
 func (c *GcpCryptor) Decrypt(value interface{}) (interface{}, error) {
 	strvalue := fmt.Sprintf("%v", value)
 
@@ -85,7 +89,6 @@ func createGcpClient(c *GcpConfig) (client *http.Client, err error) {
 		}
 		client = oauth2.NewClient(ctx, creds.TokenSource)
 		return client, nil
-	} else {
-		return google.DefaultClient(ctx, kms.CloudPlatformScope)
 	}
+	return google.DefaultClient(ctx, kms.CloudPlatformScope)
 }

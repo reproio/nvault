@@ -12,10 +12,12 @@ import (
 	"github.com/aws/aws-sdk-go/service/kms"
 )
 
+// AwsCryptor ...
 type AwsCryptor struct {
 	AwsConfig
 }
 
+// AwsConfig ...
 type AwsConfig struct {
 	AwsKmsKeyID        string
 	AwsRegion          string
@@ -23,6 +25,7 @@ type AwsConfig struct {
 	AwsSecretAccessKey string
 }
 
+// Encrypt ...
 func (c *AwsCryptor) Encrypt(value interface{}) (interface{}, error) {
 	if c.AwsKmsKeyID == "" {
 		return nil, errors.New("missing Aws KMS Key ID")
@@ -41,6 +44,7 @@ func (c *AwsCryptor) Encrypt(value interface{}) (interface{}, error) {
 	return encoded, nil
 }
 
+// Decrypt ...
 func (c *AwsCryptor) Decrypt(value interface{}) (interface{}, error) {
 	strvalue := fmt.Sprintf("%v", value)
 
@@ -86,11 +90,11 @@ func createAwsCredentials(c *AwsConfig) *credentials.Credentials {
 
 	if c.AwsAccessKeyID != "" && c.AwsSecretAccessKey != "" {
 		providers = append(providers, &credentials.StaticProvider{
-			credentials.Value{
-				c.AwsAccessKeyID,
-				c.AwsSecretAccessKey,
-				"",
-				"",
+			Value: credentials.Value{
+				AccessKeyID:     c.AwsAccessKeyID,
+				SecretAccessKey: c.AwsSecretAccessKey,
+				SessionToken:    "",
+				ProviderName:    "",
 			},
 		})
 	}
@@ -98,6 +102,7 @@ func createAwsCredentials(c *AwsConfig) *credentials.Credentials {
 	return credentials.NewChainCredentials(providers)
 }
 
+// WithAwsCredential ...
 func WithAwsCredential(awsAccessKeyID, awsSecretAccessKey string) Option {
 	return func(c *Config) error {
 		c.AwsAccessKeyID = awsAccessKeyID
@@ -106,6 +111,7 @@ func WithAwsCredential(awsAccessKeyID, awsSecretAccessKey string) Option {
 	}
 }
 
+// WithAwsRegion ...
 func WithAwsRegion(awsRegion string) Option {
 	return func(c *Config) error {
 		c.AwsRegion = awsRegion

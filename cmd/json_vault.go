@@ -7,7 +7,8 @@ import (
 	"github.com/reproio/nvault"
 )
 
-func JsonConverter(input io.Reader, output io.Writer, cryptor Cryptor) error {
+// JSONConverter ...
+func JSONConverter(input io.Reader, output io.Writer, cryptor Cryptor) error {
 	p := nvault.Placeholder{}
 
 	decoder := json.NewDecoder(input)

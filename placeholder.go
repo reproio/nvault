@@ -7,6 +7,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
+// PathFragment ...
 type PathFragment struct {
 	Type     string
 	Fragment string
@@ -16,8 +17,10 @@ func (pf PathFragment) String() string {
 	return fmt.Sprintf("%s: %s", pf.Fragment, pf.Type)
 }
 
+// Path ...
 type Path []PathFragment
 
+// Equal ...
 func (p Path) Equal(other Path) bool {
 	for i, left := range p {
 		if left != other[i] {
@@ -27,6 +30,7 @@ func (p Path) Equal(other Path) bool {
 	return true
 }
 
+// AddRoot ...
 func (p Path) AddRoot(root PathFragment) Path {
 	return append(Path{root}, p...)
 }
@@ -38,6 +42,7 @@ func (p Path) String() (s string) {
 	return
 }
 
+// Match ...
 func (p Path) Match(search Path) (result bool) {
 	if search[0].Fragment != "$" {
 		return
@@ -68,10 +73,10 @@ func (p Path) Match(search Path) (result bool) {
 	return
 }
 
+// Placeholder ...
 type Placeholder map[string]interface{}
 
-type Placeholsers []map[string]interface{}
-
+// Matches ...
 func (p Placeholder) Matches(search []Path) (results []Path) {
 	if len(search) == 0 {
 		return p.Paths()
@@ -87,6 +92,7 @@ func (p Placeholder) Matches(search []Path) (results []Path) {
 	return
 }
 
+// Paths ...
 func (p Placeholder) Paths() (paths []Path) {
 	for f, v := range p {
 		root := PathFragment{"string", f}
@@ -110,6 +116,7 @@ func (p Placeholder) Paths() (paths []Path) {
 	return paths
 }
 
+// Set ...
 func (p Placeholder) Set(path Path, value interface{}) error {
 	if len(path) == 0 {
 		return nil
@@ -127,6 +134,7 @@ func (p Placeholder) Set(path Path, value interface{}) error {
 	return nil
 }
 
+// Get ...
 func (p Placeholder) Get(path Path) (interface{}, error) {
 	if len(path) == 0 {
 		return p, nil
@@ -143,8 +151,10 @@ func (p Placeholder) Get(path Path) (interface{}, error) {
 	}
 }
 
+// Placeholders ...
 type Placeholders []map[string]interface{}
 
+// Matches ...
 func (ps Placeholders) Matches(search []Path) (results []Path) {
 	if len(search) == 0 {
 		return ps.Paths()
@@ -160,6 +170,7 @@ func (ps Placeholders) Matches(search []Path) (results []Path) {
 	return
 }
 
+// Paths ...
 func (ps Placeholders) Paths() (paths []Path) {
 	for i, p := range ps {
 		root := PathFragment{"string", fmt.Sprintf("%d", i)}
@@ -172,6 +183,7 @@ func (ps Placeholders) Paths() (paths []Path) {
 	return paths
 }
 
+// Set ...
 func (ps Placeholders) Set(path Path, value interface{}) error {
 	if len(path) == 0 {
 		return nil
@@ -186,6 +198,7 @@ func (ps Placeholders) Set(path Path, value interface{}) error {
 	return nil
 }
 
+// Get ...
 func (ps Placeholders) Get(path Path) (interface{}, error) {
 	if len(path) == 0 {
 		return ps, nil
@@ -200,6 +213,7 @@ func (ps Placeholders) Get(path Path) (interface{}, error) {
 	return nil, nil
 }
 
+// Encrypt ...
 func (p *Placeholder) Encrypt(s interface{}, config *Config, paths ...Path) error {
 	err := Encrypt(p, config, paths...)
 	if err != nil {
@@ -209,6 +223,7 @@ func (p *Placeholder) Encrypt(s interface{}, config *Config, paths ...Path) erro
 	return mapstructure.Decode(p, s)
 }
 
+// Decrypt ...
 func (p *Placeholder) Decrypt(s interface{}, config *Config, paths ...Path) error {
 	err := Decrypt(p, config, paths...)
 	if err != nil {
