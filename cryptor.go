@@ -25,9 +25,11 @@ func NewCryptor(config *Config) Cryptor {
 	case "gcp-kms":
 		cryptor = &GcpCryptor{config.GcpConfig}
 	case "simple":
+		cryptor = &SimpleCryptor{config.SimpleConfig}
+	case "none":
 		fallthrough
 	default:
-		cryptor = &SimpleCryptor{config.SimpleConfig}
+		cryptor = &NoneCryptor{config.NoneConfig}
 	}
 
 	return cryptor
@@ -35,6 +37,7 @@ func NewCryptor(config *Config) Cryptor {
 
 // Config ...
 type Config struct {
+	NoneConfig
 	SimpleConfig
 	AwsConfig
 	GcpConfig
