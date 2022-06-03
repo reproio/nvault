@@ -78,10 +78,6 @@ type Placeholder map[string]interface{}
 
 // Matches ...
 func (p Placeholder) Matches(search []Path) (results []Path) {
-	if len(search) == 0 {
-		return p.Paths()
-	}
-
 	for _, path := range p.Paths() {
 		for _, s := range search {
 			if path.Match(s) {
