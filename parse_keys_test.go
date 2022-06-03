@@ -1,4 +1,4 @@
-package cmd
+package nvault_test
 
 import (
 	"testing"
@@ -34,7 +34,7 @@ func TestParseKeys(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		paths, err := ParseKeys(test.clikey)
+		paths, err := nvault.ParseKeys(test.clikey)
 
 		if test.err != "" {
 			if err == nil {

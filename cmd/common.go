@@ -175,7 +175,7 @@ func command(converter Converter, cryptor Cryptor) func(*cli.Context) error {
 func encryptor(p *nvault.Placeholder) (err error) {
 	var paths []nvault.Path
 	if key != "" {
-		paths, err = ParseKeys(key)
+		paths, err = nvault.ParseKeys(key)
 		if err != nil {
 			return
 		}
@@ -194,7 +194,7 @@ func encryptor(p *nvault.Placeholder) (err error) {
 func decryptor(p *nvault.Placeholder) (err error) {
 	var paths []nvault.Path
 	if key != "" {
-		paths, err = ParseKeys(key)
+		paths, err = nvault.ParseKeys(key)
 		if err != nil {
 			return
 		}

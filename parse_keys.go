@@ -1,4 +1,4 @@
-package cmd
+package nvault
 
 import (
 	"bufio"
@@ -6,12 +6,10 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-
-	"github.com/reproio/nvault"
 )
 
 // ParseKeys ...
-func ParseKeys(clikey string) (paths []nvault.Path, err error) {
+func ParseKeys(clikey string) (paths []Path, err error) {
 	for _, key := range strings.Split(clikey, ",") {
 		path, err := parseKey(key)
 		if err != nil {
@@ -42,7 +40,7 @@ var regs = []ScanType{
 	{regexp.MustCompile(`^[^\.]+`), "string"},
 }
 
-func parseKey(key string) (nvault.Path, error) {
+func parseKey(key string) (Path, error) {
 	s := bufio.NewScanner(strings.NewReader(key))
 
 	s.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
@@ -88,10 +86,10 @@ func parseKey(key string) (nvault.Path, error) {
 		return nil, errors.New("no path fragments")
 	}
 
-	var path nvault.Path
+	var path Path
 	for _, fragment := range fragments {
 		f := strings.SplitN(fragment, ":", 2)
-		path = append(path, nvault.PathFragment{
+		path = append(path, PathFragment{
 			Type:     f[0],
 			Fragment: f[1]},
 		)
