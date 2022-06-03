@@ -50,14 +50,14 @@ func (c *AwsCryptor) Decrypt(value interface{}) (interface{}, error) {
 
 	decoded, err := base64.StdEncoding.DecodeString(strvalue)
 	if err != nil {
-		return value, nil
+		return value, err
 	}
 
 	output, err := serviceAws(&c.AwsConfig).Decrypt(&kms.DecryptInput{
 		CiphertextBlob: decoded,
 	})
 	if err != nil {
-		return value, nil
+		return value, err
 	}
 
 	return string(output.Plaintext), nil
